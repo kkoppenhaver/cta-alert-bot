@@ -23,6 +23,12 @@ json = {
         "required": True,
     },
     {
+        "name": "stop",
+        "description": "The stop name that you want an alert for. (e.g. Sheridan or Belmont and Broadway)",
+        "type": 3,
+        "required": True,
+    },
+    {
         "name": "time",
         "description": "When is the latest you can get on the bus or train? (e.g 12:15PM)",
         "type": 3,
@@ -30,7 +36,7 @@ json = {
     },
     {
         "name": "notice",
-        "description": "How much advance notice do you want before the bus or train arrives? (e.g. 5mins)",
+        "description": "How much advance notice do you want before the bus or train arrives? (e.g. 5 minutes)",
         "type": 3,
         "required": True,
     }
