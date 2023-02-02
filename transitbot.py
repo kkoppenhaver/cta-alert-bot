@@ -36,15 +36,16 @@ def hello(name=None):
         options     = parsed_body['data']['options']
 
         route   = format_route(options[0]['value'])
-        time    = options[1]['value']
-        notice  = options[2]['value']
+        stop    = options[1]['value']
+        time    = options[2]['value']
+        notice  = options[3]['value']
 
         
         return jsonify({
             "type": 4,
             "data": {
                 "tts": False,
-                "content": f'Great! I will watch the {route} and give you {notice} notice to make sure you are on your way by {time}.',
+                "content": f'Great! I will watch the {route} at the {stop} stop and give you {notice} notice to make sure you are on your way by {time}.',
                 "embeds": [],
                 "allowed_mentions": { "parse": [] }
             }
