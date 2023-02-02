@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 from nacl.signing import VerifyKey
 from nacl.exceptions import BadSignatureError
 
+from datetime import datetime, date
+
 load_dotenv()
 
 PUBLIC_KEY = os.getenv('APP_PUBLIC_KEY')
@@ -40,6 +42,9 @@ def hello(name=None):
         time    = options[2]['value']
         notice  = options[3]['value']
 
+        time_object = datetime.strptime(time, '%H:%M%p')
+        today       = date.today()
+        time_object = time_object.replace(year=today.year, month=today.month, day=today.day)
         
         return jsonify({
             "type": 4,
@@ -52,6 +57,12 @@ def hello(name=None):
         })
 
 def format_route( raw_route ):
+    if( is_train( raw_route ) ):
+        return raw_route.capitalize() + ' Line (Train)'
+
+    return raw_route + ' (Bus)'
+
+def is_train( raw_route ):
     train_lines = [
         'purple',
         'red',
@@ -63,7 +74,10 @@ def format_route( raw_route ):
         'blue'
     ]
 
-    if( raw_route.lower() in train_lines ):
-        return raw_route.capitalize() + ' Line (Train)'
+    if( raw_route.lower() in train_lines ) :
+        return True
 
-    return raw_route + ' (Bus)'
+    return False
+
+# def get_upcoming_trains():
+
