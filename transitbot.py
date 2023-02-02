@@ -65,4 +65,4 @@ def format_route( raw_route ):
     if( raw_route.lower() in train_lines ):
         return raw_route.capitalize() + ' Line (Train)'
 
-    return raw_route
+    return raw_route + ' (Bus)'
