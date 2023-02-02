@@ -1,6 +1,6 @@
 # Transit Alert Bot
 
-A Discord bot to remind you when you need to catch your bus or train.
+A Discord bot to remind you when you need to catch your bus or train. Repo structure forked from [Python-hellofly-flask](https://github.com/fly-apps/python-hellofly-flask).
 
 ## Getting Started
 
