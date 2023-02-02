@@ -15,18 +15,16 @@ app = Flask(__name__)
 
 @app.route('/listen', methods=['POST'])
 def hello(name=None):
-    # verify_key = VerifyKey(bytes.fromhex(PUBLIC_KEY))
+    verify_key = VerifyKey(bytes.fromhex(PUBLIC_KEY))
 
-    # signature = request.headers["X-Signature-Ed25519"]
-    # timestamp = request.headers["X-Signature-Timestamp"]
+    signature = request.headers["X-Signature-Ed25519"]
+    timestamp = request.headers["X-Signature-Timestamp"]
     body = request.data.decode("utf-8")
 
-    # return body
-
-    # try:
-    #     verify_key.verify(f'{timestamp}{body}'.encode(), bytes.fromhex(signature))
-    # except BadSignatureError:
-    #     abort(401, 'invalid request signature')
+    try:
+        verify_key.verify(f'{timestamp}{body}'.encode(), bytes.fromhex(signature))
+    except BadSignatureError:
+        abort(401, 'invalid request signature')
 
     if request.json["type"] == 1:
         return jsonify({
@@ -35,65 +33,36 @@ def hello(name=None):
     else:
 
         parsed_body = json.loads(body)
-        parsed_body = parsed_body['data']['options']
+        options     = parsed_body['data']['options']
+
+        route   = format_route(options[0]['value'])
+        time    = options[1]['value']
+        notice  = options[2]['value']
+
         
         return jsonify({
             "type": 4,
             "data": {
                 "tts": False,
-                "content": json.dumps(parsed_body),
+                "content": f'Great! I will watch the {route} and give you {notice} notice to make sure you are on your way by {time}.',
                 "embeds": [],
                 "allowed_mentions": { "parse": [] }
             }
         })
 
-    # try:
-        # body = request.json
-            
-        # signature = request.headers.get('x-signature-ed25519')
-        # timestamp = request.headers.get('x-signature-timestamp')
+def format_route( raw_route ):
+    train_lines = [
+        'purple',
+        'red',
+        'yellow',
+        'brown',
+        'green',
+        'orange',
+        'pink',
+        'blue'
+    ]
 
-        # # validate the interaction
+    if( raw_route.lower() in train_lines ):
+        return raw_route.capitalize() + ' Line (Train)'
 
-        # verify_key = VerifyKey(bytes.fromhex(PUBLIC_KEY))
-
-        # message = timestamp + body
-        
-        # try:
-        #   verify_key.verify(message.encode(), signature=bytes.fromhex(signature))
-        # except BadSignatureError:
-        #   return jsonify('invalid request signature'), 401
-
-        
-        # handle the interaction
-
-    #     t = body['type']
-
-    #     if t == 1:
-    #       return jsonify({type: 1}), 200
-    #     elif t == 2:
-    #       return jsonify({type: 2}), 200
-    #     else:
-    #         return jsonify('unhandled request type'), 400
-    # except:
-    #     raise
-
-# def command_handler(body):
-#     command = body['data']['name']
-
-#     if command == 'bleb':
-#         return {
-#           'statusCode': 200,
-#           'body': json.dumps({
-#             'type': 4,
-#             'data': {
-#               'content': 'Hello, World.',
-#             }
-#           })
-#         }
-#     else:
-#         return {
-#           'statusCode': 400,
-#           'body': json.dumps('unhandled command')
-#         }
-
+    return raw_route

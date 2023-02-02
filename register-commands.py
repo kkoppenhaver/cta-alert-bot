@@ -14,7 +14,7 @@ url = f'https://discord.com/api/v8/applications/{APP_ID}/guilds/{GUILD_ID}/comma
 
 json = {
   'name': 'transitalert',
-  'description': 'Sets a transit alert for a bus or train line.',
+  'description': 'Sets a transit alert for a bus or train line. (e.g Red or 151)',
   'options': [
     {
         "name": "route",
