@@ -1,9 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/')
-@app.route('/listen')
+@app.route('/listen', methods=['POST'])
 def hello(name=None):
-    return render_template('hello.html', name=name)
+    data = request.json
+    return jsonify(data)
 
